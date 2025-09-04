@@ -46,12 +46,13 @@ exports.signUp_post = [
 
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
       const query =
-        "INSERT INTO users (first_name, last_name, username, password) VALUES ($1, $2, $3, $4)";
+        "INSERT INTO users (first_name, last_name, username, password, membership_status) VALUES ($1, $2, $3, $4, $5)";
       const values = [
         req.body.first_name,
         req.body.last_name,
         req.body.username,
         hashedPassword,
+        true
       ];
       await db.query(query, values);
       res.redirect("/");
