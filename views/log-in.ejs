@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In</title>
+</head>
+<body>
+  <h1>Log In</h1>
+  <form action="/sign-up/log-in" method="POST">
+    <div>
+      <label for="username">Username</label>
+      <input name="username" id="username" type="text" required />
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input name="password" id="password" type="password" required />
+    </div>
+    <button>Log In</button>
+  </form>
+
+  <% if (errors) { %>
+    <ul>
+      <% errors.forEach(err => { %>
+        <li><%= err.msg %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+
+</body>
+</html>

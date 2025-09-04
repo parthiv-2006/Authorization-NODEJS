@@ -6,6 +6,13 @@
     <title>Document</title>
 </head>
 <body>
+    <% if (user) { %>
+        <p>Hello, <%= user.username %>!</p>
+        <a href="/sign-up/log-out">Log-out</a>
+    <%} else { %>
+        <a href="/sign-up">Sign-up</a>
+        <a href="/sign-up/log-in">Log-in</a>
+    <%} %>
     
 </body>
 </html>

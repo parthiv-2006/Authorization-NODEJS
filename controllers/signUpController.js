@@ -1,6 +1,10 @@
 const db = require("../db/pool.js");
 const { body, validationResult } = require("express-validator");
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
+
+exports.log_in_get = (req, res) => {
+  res.render("log-in", { errors: [] });
+};
 
 exports.signUp_get = (req, res) => {
   res.render("sign_up", {
@@ -46,16 +50,26 @@ exports.signUp_post = [
 
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
       const query =
-        "INSERT INTO users (first_name, last_name, username, password, membership_status) VALUES ($1, $2, $3, $4, $5)";
+        "INSERT INTO users (first_name, last_name, username, password, membership_status) VALUES ($1, $2, $3, $4, $5) RETURNING *";
       const values = [
         req.body.first_name,
         req.body.last_name,
         req.body.username,
         hashedPassword,
-        true
+        true,
       ];
-      await db.query(query, values);
-      res.redirect("/");
+      const result = await db.query(query, values);
+      const newUser = result.rows[0];
+
+      req.login(newUser, (err) => {
+        if (err) {
+          return res.status(500).send(err.message);
+        }
+        res.redirect("/");
+      });
+
+      
+
     } catch (err) {
       res.status(500).send(err.message);
     }
